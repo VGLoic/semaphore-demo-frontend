@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  createBrowserHistory,
+  ReactLocation,
+  Router,
+} from '@tanstack/react-location';
+import Layout from './components/layout';
+import GroupPage from './pages/group';
+import Home from './pages/home';
+import IdentityPage from './pages/identity';
+
+const routes = [
+  { path: '/group', element: <GroupPage /> },
+  { path: '/identity', element: <IdentityPage /> },
+  { path: '/', element: <Home /> },
+];
+
+const history = createBrowserHistory();
+const location = new ReactLocation({ history });
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Router location={location} routes={routes} />
+    </Layout>
   );
 }
 
