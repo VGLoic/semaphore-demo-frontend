@@ -1,7 +1,7 @@
 import { useMetaMask } from 'metamask-react';
 import { isNetworkSupported, Networks } from '../constants';
 
-const DEFAULT_NETWORK_ID = Networks.Polygon;
+const DEFAULT_NETWORK_ID = Networks.Goerli;
 
 export function useNetwork() {
   const { chainId, status } = useMetaMask();

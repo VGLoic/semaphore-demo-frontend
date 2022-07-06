@@ -7,8 +7,10 @@ import Layout from './components/layout';
 import GroupPage from './pages/group';
 import Home from './pages/home';
 import IdentityPage from './pages/identity';
+import ProofPage from './pages/proof';
 
 const routes = [
+  { path: '/proof', element: <ProofPage /> },
   { path: '/group', element: <GroupPage /> },
   { path: '/identity', element: <IdentityPage /> },
   { path: '/', element: <Home /> },

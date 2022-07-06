@@ -18,7 +18,7 @@ function PrivateBadge({ className }: BadgeProps) {
     <div
       className={`${className} text-red-600 border-2 border-current rounded-lg px-2 mx-auto`}
     >
-      private
+      private part
     </div>
   );
 }
@@ -27,7 +27,7 @@ function PublicBadge({ className }: BadgeProps) {
     <div
       className={`${className} text-green-600 border-2 border-current rounded-lg px-2 mx-auto`}
     >
-      public
+      public part
     </div>
   );
 }
@@ -95,8 +95,8 @@ function IdentityPage() {
           <div className="mb-4 flex justify-between">
             <div className="flex flex-col">
               <PrivateBadge className="mb-4 text-sm" />
-              <div className="font-bold mb-2">Trapdoor</div>
-              <div className="font-bold">Nullifier</div>
+              <div className="font-bold mb-2">"Trapdoor"</div>
+              <div className="font-bold">+ "Nullifier"</div>
             </div>
             <div className="flex flex-col items-center">
               <PrivateBadge className="mb-6 invisible" />
@@ -105,13 +105,13 @@ function IdentityPage() {
             </div>
             <div className="flex flex-col">
               <PublicBadge className="mb-6 text-md" />
-              <div className="font-bold">Commitment</div>
+              <div className="font-bold">"Commitment"</div>
             </div>
           </div>
         </div>
         <div className="mt-8 flex justify-between items-center">
           <div className="text-lg mr-8 flex-2">
-            An identity can be randomly generated:
+            A Semaphore identity can be randomly generated:
           </div>
           <div className="flex-1 flex items-center text-sm">
             <div>
