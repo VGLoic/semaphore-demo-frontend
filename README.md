@@ -2,6 +2,8 @@
 
 This repository contains the code of the frontend for the Semaphore demo.
 
+The application is deployed at https://semaphore-demo.netlify.app/.
+
 ## Smart Contracts
 
 The smart contracts are in a [different repository](https://github.com/VGLoic/semaphore-demo-contracts).
@@ -27,7 +29,7 @@ npm install
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

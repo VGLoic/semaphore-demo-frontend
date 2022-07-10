@@ -2,6 +2,14 @@
   "name": "semaphore-demo-frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "Loïc Vincent-Genod (https://github.com/VGLoic)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VGLoic/semaphore-demo-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VGLoic/semaphore-demo-frontend/issues"
+  },
   "dependencies": {
     "@semaphore-protocol/group": "^2.0.0",
     "@semaphore-protocol/identity": "^2.0.0",
