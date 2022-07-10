@@ -9,6 +9,7 @@ import { useMutation } from 'react-query';
 import { cutHexString } from '../utils';
 import { Link } from '@tanstack/react-location';
 import { useSemaphore } from '../providers/semaphore.provider';
+import Button from '../components/button';
 
 type BadgeProps = {
   className?: string;
@@ -18,7 +19,7 @@ function PrivateBadge({ className }: BadgeProps) {
     <div
       className={`${className} text-red-600 border-2 border-current rounded-lg px-2 mx-auto`}
     >
-      private
+      private part
     </div>
   );
 }
@@ -27,7 +28,7 @@ function PublicBadge({ className }: BadgeProps) {
     <div
       className={`${className} text-green-600 border-2 border-current rounded-lg px-2 mx-auto`}
     >
-      public
+      public part
     </div>
   );
 }
@@ -95,8 +96,8 @@ function IdentityPage() {
           <div className="mb-4 flex justify-between">
             <div className="flex flex-col">
               <PrivateBadge className="mb-4 text-sm" />
-              <div className="font-bold mb-2">Trapdoor</div>
-              <div className="font-bold">Nullifier</div>
+              <div className="font-bold mb-2">"Trapdoor"</div>
+              <div className="font-bold">+ "Nullifier"</div>
             </div>
             <div className="flex flex-col items-center">
               <PrivateBadge className="mb-6 invisible" />
@@ -105,13 +106,13 @@ function IdentityPage() {
             </div>
             <div className="flex flex-col">
               <PublicBadge className="mb-6 text-md" />
-              <div className="font-bold">Commitment</div>
+              <div className="font-bold">"Commitment"</div>
             </div>
           </div>
         </div>
         <div className="mt-8 flex justify-between items-center">
           <div className="text-lg mr-8 flex-2">
-            An identity can be randomly generated:
+            A Semaphore identity can be randomly generated:
           </div>
           <div className="flex-1 flex items-center text-sm">
             <div>
@@ -128,12 +129,9 @@ function IdentityPage() {
                 <HexShow value={bigIntToHex(randomId.generateCommitment())} />
               </div>
             </div>
-            <button
-              className="ml-8 py-2 px-4 border border-black font-semibold shadow rounded  hover:outline hover:outline-1 hover:outline-slate-400"
-              onClick={regenRandomId}
-            >
+            <Button onClick={regenRandomId} status="enabled" className="ml-8">
               <BiRefresh />
-            </button>
+            </Button>
           </div>
         </div>
         <div className="border border-black opacity-30 w-1/2 mt-8" />
@@ -151,13 +149,18 @@ function IdentityPage() {
             {status === 'connected' ? (
               <UserId />
             ) : (
-              <button
+              <Button
                 onClick={connect}
-                disabled={status === 'connecting'}
-                className="py-2 px-4 border border-black font-semibold shadow rounded  hover:outline hover:outline-1 hover:outline-slate-400"
+                status={
+                  status === 'connecting'
+                    ? 'loading'
+                    : status === 'unavailable'
+                    ? 'disabled'
+                    : 'enabled'
+                }
               >
                 Connect
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -195,12 +198,9 @@ function UserId() {
           <HexShow value={bigIntToHex(id.generateCommitment())} />
         </div>
       </div>
-      <button
-        className="ml-8 py-2 px-4 border border-black font-semibold shadow rounded  hover:outline hover:outline-1 hover:outline-slate-400"
-        onClick={() => setId(null)}
-      >
+      <Button onClick={() => setId(null)} status="enabled" className="ml-8">
         <ImBin />
-      </button>
+      </Button>
     </div>
   );
 }
@@ -225,13 +225,13 @@ function GenerateId() {
   );
 
   return (
-    <button
-      className="ml-8 py-2 px-4 border border-black font-semibold shadow rounded  hover:outline hover:outline-1 hover:outline-slate-400"
+    <Button
       onClick={() => mutate()}
-      disabled={status === 'loading'}
+      status={status === 'loading' ? 'loading' : 'enabled'}
+      className="ml-8"
     >
       Generate ID
-    </button>
+    </Button>
   );
 }
 

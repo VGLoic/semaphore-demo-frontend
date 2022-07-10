@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useQuery } from 'react-query';
 import { getNetworkName, SUPPORTED_NETWORK } from '../constants';
 import { mainnetProvider, useNetwork } from '../contracts';
+import Button from './button';
 
 type LayoutProps = {
   children: React.ReactElement;
@@ -16,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
       style={{ backgroundImage: 'url("/images/background.jpeg")' }}
     >
       <div className="flex justify-between items-center px-16 py-8">
-        <h1 className="text-2xl">Private Lendies</h1>
+        <h1 className="text-2xl">Semaphore Demo</h1>
         <div className="flex items-center justify-end w-64">
           <Network />
           <ConnectButton />
@@ -39,13 +40,12 @@ function ConnectButton() {
   if (status === 'connected') return <Account />;
 
   return (
-    <button
+    <Button
       onClick={connect}
-      disabled={status === 'connecting'}
-      className="py-2 px-4 border border-black font-semibold shadow rounded  hover:outline hover:outline-1 hover:outline-slate-400"
+      status={status === 'connecting' ? 'loading' : 'enabled'}
     >
       Connect
-    </button>
+    </Button>
   );
 }
 
@@ -95,15 +95,12 @@ function WrongNetwork() {
     <div className="p-16 flex flex-col items-center justify-center w-full">
       <div className="text-xl mb-8">The current network is not supported</div>
       <div className="mb-8">
-        Switch to a supported netwwork to enjoy the LELs
+        Switch to a supported network in order to discover the demo
       </div>
       <div className="flex">
-        <button
-          onClick={switchNetwork}
-          className="py-2 px-4 border border-black font-semibold shadow rounded  hover:outline hover:outline-1 hover:outline-slate-400"
-        >
+        <Button onClick={switchNetwork} status="enabled">
           {getNetworkName(SUPPORTED_NETWORK)}
-        </button>
+        </Button>
       </div>
     </div>
   );

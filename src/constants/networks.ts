@@ -19,7 +19,7 @@ export enum Networks {
   Fantom = 250, // 0xfa
 }
 
-export const SUPPORTED_NETWORK = Networks.Polygon;
+export const SUPPORTED_NETWORK = Networks.Goerli;
 
 export function isNetworkSupported(chainId: number) {
   return chainId === SUPPORTED_NETWORK;
