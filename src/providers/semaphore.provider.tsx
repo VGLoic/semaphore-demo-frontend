@@ -27,38 +27,51 @@ type SemaphoreProviderProps = any;
 export function SemaphoreProvider(props: SemaphoreProviderProps) {
   const [id, setId] = React.useState<Identity | null>(null);
 
-  const query = useQuery(["group", { id: GROUP_ID }], () => {
-    return request<{
-      group: {
-        members: {
-          identityCommitment: string
-        }[]
-      }
-    }>(
-    SUBGRAPH_ENDPOINT,
-    gql`
+  const query = useQuery(
+    ['group', { id: GROUP_ID }],
+    () => {
+      return request<{
+        group: {
+          members: {
+            identityCommitment: string;
+          }[];
+        };
+      }>(
+        SUBGRAPH_ENDPOINT,
+        gql`
   query {
     group(id: ${GROUP_ID}) {
-      members {
+      root
+      members(orderBy: index) {
         identityCommitment
       }
     }
   }
-`)}, {
-  refetchInterval: 1000
-});
+`,
+      );
+    },
+    {
+      refetchInterval: 1000,
+    },
+  );
 
   const groupWrapper = React.useMemo(() => {
     if (query.status !== 'success') return null;
-    const commitments = query.data.group.members.map(m => m.identityCommitment);
+    const commitments = query.data.group.members.map(
+      (m) => m.identityCommitment,
+    );
     const group = new Group();
     group.addMembers(commitments);
     return { group, commitments };
   }, [query.status, query.data]);
-  
-  const hasJoined = Boolean(id && groupWrapper && groupWrapper.commitments.includes(id.generateCommitment().toString()));
 
-  const value: ISemaphoreContext = { id, setId, hasJoined, groupWrapper  };
+  const hasJoined = Boolean(
+    id &&
+      groupWrapper &&
+      groupWrapper.commitments.includes(id.generateCommitment().toString()),
+  );
+
+  const value: ISemaphoreContext = { id, setId, hasJoined, groupWrapper };
 
   return (
     <SemaphoreContext.Provider value={value}>
