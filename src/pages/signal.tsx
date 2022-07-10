@@ -175,6 +175,7 @@ function BroadcastSignal() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['group', { id: GROUP_ID }, 'signals']);
+        setGeneratedProof(null);
         reset();
       },
     },

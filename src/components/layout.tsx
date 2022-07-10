@@ -1,6 +1,7 @@
 import { useConnectedMetaMask, useMetaMask } from 'metamask-react';
 import * as React from 'react';
 import { useQuery } from 'react-query';
+import { SiGithub } from 'react-icons/si';
 import { getNetworkName, SUPPORTED_NETWORK } from '../constants';
 import { mainnetProvider, useNetwork } from '../contracts';
 import Button from './button';
@@ -18,9 +19,15 @@ export default function Layout({ children }: LayoutProps) {
     >
       <div className="flex justify-between items-center px-16 py-8">
         <h1 className="text-2xl">Semaphore Demo</h1>
-        <div className="flex items-center justify-end w-64">
+        <div className="flex items-center justify-end w-72">
           <Network />
           <ConnectButton />
+          <a
+            className="ml-12 text-3xl hover:cursor-pointer"
+            href="https://github.com/VGLoic/semaphore-demo-frontend"
+          >
+            <SiGithub />
+          </a>
         </div>
       </div>
       <div className="flex justify-center">
