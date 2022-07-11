@@ -1,5 +1,5 @@
 import {
-  createBrowserHistory,
+  createHashHistory,
   ReactLocation,
   Router,
 } from '@tanstack/react-location';
@@ -16,7 +16,7 @@ const routes = [
   { path: '/', element: <Home /> },
 ];
 
-const history = createBrowserHistory();
+const history = createHashHistory();
 const location = new ReactLocation({ history });
 
 function App() {
