@@ -5,16 +5,36 @@ import * as React from 'react';
 import { useQuery } from 'react-query';
 import { GROUP_ID, SUBGRAPH_ENDPOINT } from '../constants';
 
+type IdArguments = {
+  address: string;
+  message: string;
+};
+
+type GeneratedIdentity = {
+  id: Identity;
+  idArguments: IdArguments;
+};
+
+type StringifiedGeneratedIdentity = {
+  idString: string;
+  message: string;
+  address: string;
+};
+
 type ISemaphoreContext =
   | {
       id: Identity;
-      setId: (id: Identity | null) => void;
+      idArguments: IdArguments;
+      setIdentity: (id: GeneratedIdentity) => void;
+      clearIdentity: () => void;
       hasJoined: boolean;
       groupWrapper: null | { group: Group; commitments: string[] };
     }
   | {
       id: null;
-      setId: (id: Identity | null) => void;
+      idArguments: null;
+      setIdentity: (id: GeneratedIdentity) => void;
+      clearIdentity: () => void;
       hasJoined: boolean;
       groupWrapper: null | { group: Group; commitments: string[] };
     };
@@ -25,7 +45,46 @@ const SemaphoreContext = React.createContext<ISemaphoreContext | undefined>(
 
 type SemaphoreProviderProps = any;
 export function SemaphoreProvider(props: SemaphoreProviderProps) {
-  const [id, setId] = React.useState<Identity | null>(null);
+  const [generatedId, setGeneratedId] =
+    React.useState<GeneratedIdentity | null>(() => {
+      const cachedValue = localStorage.getItem('@slourp/semaphore-demo');
+      if (!cachedValue) return null;
+      try {
+        const parsedValue: StringifiedGeneratedIdentity =
+          JSON.parse(cachedValue);
+        if (
+          !parsedValue.address ||
+          !parsedValue.message ||
+          !parsedValue.idString
+        ) {
+          throw new Error('Value not valid');
+        }
+        const id = new Identity(parsedValue.idString);
+        return {
+          id,
+          idArguments: {
+            address: parsedValue.address,
+            message: parsedValue.message,
+          },
+        };
+      } catch (err) {
+        localStorage.removeItem('@slourp/semaphore-demo');
+        return null;
+      }
+    });
+
+  React.useEffect(() => {
+    if (!generatedId) {
+      localStorage.removeItem('@slourp/semaphore-demo');
+    } else {
+      const data: StringifiedGeneratedIdentity = {
+        idString: generatedId.id.toString(),
+        address: generatedId.idArguments.address,
+        message: generatedId.idArguments.message,
+      };
+      localStorage.setItem('@slourp/semaphore-demo', JSON.stringify(data));
+    }
+  }, [generatedId]);
 
   const query = useQuery(
     ['group', { id: GROUP_ID }],
@@ -66,12 +125,30 @@ export function SemaphoreProvider(props: SemaphoreProviderProps) {
   }, [query.status, query.data]);
 
   const hasJoined = Boolean(
-    id &&
+    generatedId &&
       groupWrapper &&
-      groupWrapper.commitments.includes(id.generateCommitment().toString()),
+      groupWrapper.commitments.includes(
+        generatedId.id.generateCommitment().toString(),
+      ),
   );
 
-  const value: ISemaphoreContext = { id, setId, hasJoined, groupWrapper };
+  const value: ISemaphoreContext = generatedId
+    ? {
+        id: generatedId.id,
+        idArguments: generatedId.idArguments,
+        setIdentity: (id: GeneratedIdentity) => setGeneratedId(id),
+        clearIdentity: () => setGeneratedId(null),
+        hasJoined,
+        groupWrapper,
+      }
+    : {
+        id: null,
+        idArguments: null,
+        setIdentity: (id: GeneratedIdentity) => setGeneratedId(id),
+        clearIdentity: () => setGeneratedId(null),
+        hasJoined,
+        groupWrapper,
+      };
 
   return (
     <SemaphoreContext.Provider value={value}>

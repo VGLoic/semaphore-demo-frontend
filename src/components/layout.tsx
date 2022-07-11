@@ -2,15 +2,24 @@ import { useConnectedMetaMask, useMetaMask } from 'metamask-react';
 import * as React from 'react';
 import { useQuery } from 'react-query';
 import { SiGithub } from 'react-icons/si';
+import { ImBin } from 'react-icons/im';
+import { GiCancel } from 'react-icons/gi';
 import { getNetworkName, SUPPORTED_NETWORK } from '../constants';
 import { mainnetProvider, useNetwork } from '../contracts';
 import Button from './button';
+import {
+  useConnectedSemaphore,
+  useSemaphore,
+} from '../providers/semaphore.provider';
+import { bigIntToHex, cutHexString } from '../utils';
+import HexShow from './hex-show';
 
 type LayoutProps = {
   children: React.ReactElement;
 };
 export default function Layout({ children }: LayoutProps) {
   const { supported } = useNetwork();
+  const { id } = useSemaphore();
 
   return (
     <div
@@ -19,7 +28,8 @@ export default function Layout({ children }: LayoutProps) {
     >
       <div className="flex justify-between items-center px-16 py-8">
         <h1 className="text-2xl">Semaphore Demo</h1>
-        <div className="flex items-center justify-end w-72">
+        <div className="flex flex-1 items-center justify-end w-72">
+          {Boolean(id) ? <SemaphoreId /> : null}
           <Network />
           <ConnectButton />
           <a
@@ -33,6 +43,61 @@ export default function Layout({ children }: LayoutProps) {
       <div className="flex justify-center">
         {supported ? children : <WrongNetwork />}
       </div>
+    </div>
+  );
+}
+
+function SemaphoreId() {
+  const { id, idArguments, clearIdentity } = useConnectedSemaphore();
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="relative mx-auto">
+      <Button
+        status="enabled"
+        className="border-green-800 text-green-800 shadow-inner shadow-xl border-2"
+        onClick={() => setOpen((o) => !o)}
+      >
+        {cutHexString(bigIntToHex(id.generateCommitment()))}
+      </Button>
+      {open ? (
+        <div
+          style={{ backgroundImage: 'url("/images/background.jpeg")' }}
+          className=" drop-shadow-2xl absolute mt-8 inset-y-full w-80 h-fit px-6 py-4 border-2 rounded border-current bg-cover bg-no-repeat"
+        >
+          <div className="flex justify-between">
+            <div>Identity</div>
+            <Button status="enabled" onClick={() => setOpen(false)}>
+              <GiCancel />
+            </Button>
+          </div>
+          <div className="text-sm mt-4">
+            <div className="flex">
+              <div className="text-red-600 mr-2">Trapdoor: </div>
+              <HexShow value={bigIntToHex(id.getTrapdoor())} />
+            </div>
+            <div className="flex">
+              <div className="text-red-600 mr-2">Nullifier: </div>
+              <HexShow value={bigIntToHex(id.getNullifier())} />
+            </div>
+            <div className="flex">
+              <div className="text-green-600 mr-2">Derived commitment: </div>
+              <HexShow value={bigIntToHex(id.generateCommitment())} />
+            </div>
+          </div>
+          <div className="mt-4 mb-4 w-1/2 mx-auto border border-black" />
+          <div>Generated from</div>
+          <div className="text-sm mt-4">
+            <div>Address: {cutHexString(idArguments.address)}</div>
+            <div>Message: "{idArguments.message}"</div>
+          </div>
+          <div className="mt-4 mb-4 w-1/2 mx-auto border border-black" />
+          <div className="text-center">
+            <Button onClick={() => clearIdentity()} status="enabled">
+              <ImBin />
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

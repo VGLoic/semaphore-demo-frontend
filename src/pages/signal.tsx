@@ -63,7 +63,7 @@ function SignalPage() {
   }
 
   return (
-    <div className="w-full px-16 py-8">
+    <div className="w-full px-16 pt-2 pb-8">
       <Link className="hover:underline hover:underline-offset-2" to="/group">
         {'<-'} Back to group
       </Link>
@@ -76,12 +76,12 @@ function SignalPage() {
             <div className="mb-2 text-base font-bold">
               But it is broadcasted anonymously
             </div>
-            <div className="mb-2 text-xs">
+            <div className="mb-2 text-sm">
               It is done using a zero knowledge proof proving that the creator
               of the signal is one of the members of the group, but nobody will
               know which one
             </div>
-            <div className="text-xs">
+            <div className="text-sm">
               Another data is needed for the proof: the "external nullifier"
               which is used in order to prevent double signalling
             </div>
@@ -235,7 +235,7 @@ function BroadcastSignal() {
           <div className="text-sm mt-2">
             You can use any address to publish the proof!
           </div>
-          <div className="text-xs mt-2">
+          <div className="text-sm mt-2">
             In particular, a different address than the one used in the ID
             commitment is recommended
           </div>
