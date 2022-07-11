@@ -45,7 +45,7 @@ function UserGroup() {
   const { hasJoined, groupWrapper } = useConnectedSemaphore();
 
   return (
-    <div className="w-full px-16 py-8">
+    <div className="w-full px-16 pt-2  pb-8">
       <Link className="hover:underline hover:underline-offset-2" to="/identity">
         {'<-'} Back to identity
       </Link>
@@ -59,9 +59,9 @@ function UserGroup() {
             </div>
             <div className="mb-4">
               Groups can be on chain or off chain and the conditions for
-              entering or leaving the are up to the group designer
+              entering or leaving the groups are up to the groups designers
             </div>
-            <div className="text-xs">
+            <div className="text-sm">
               Technically speaking, the commmitments are organised in a Merkle
               tree
             </div>
@@ -122,18 +122,20 @@ function JoinGroup() {
       >
         Join group
       </Button>
-      <div className="mt-6">
-        By clicking on this button, you will add your public identity commitment
-        to the group
-      </div>
-      <div className="text-sm mt-4">
-        As the group is on chain, joining the group is a transaction and the
-        commitment will be published on chain
-      </div>
-      <div className="text-xs mt-4">
-        Privacy tip: In this case, you can get an extra dose of privacy by using
-        a different address for the transaction than the one linked to the
-        commitment
+      <div className="flex flex-col items-center max-w-3xl">
+        <div className="mt-6">
+          By clicking on this button, you will add your public identity
+          commitment to the group
+        </div>
+        <div className="text-sm mt-4">
+          As the group is on chain, joining the group is a transaction and the
+          commitment will be published on chain
+        </div>
+        <div className="text-sm mt-4">
+          Privacy tip: In this case, you can get an extra dose of privacy by
+          using a different address for the transaction than the one linked to
+          the commitment
+        </div>
       </div>
     </div>
   );
