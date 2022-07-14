@@ -143,7 +143,8 @@ function UserId() {
       </div>
       <div className="mt-2">
         But there is actually no need to use this address for the transactions
-        to come, you are free, and invited, to use any address from now on
+        to come in this demonstration, you are free, and invited, to use any
+        address from now on
       </div>
     </div>
   );

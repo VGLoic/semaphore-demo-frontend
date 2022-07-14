@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { SiGithub } from 'react-icons/si';
 import { ImBin } from 'react-icons/im';
 import { GiCancel } from 'react-icons/gi';
+import { FaBook } from 'react-icons/fa';
 import { getNetworkName, SUPPORTED_NETWORK } from '../constants';
 import { mainnetProvider, useNetwork } from '../contracts';
 import Button from './button';
@@ -37,6 +38,13 @@ export default function Layout({ children }: LayoutProps) {
             href="https://github.com/VGLoic/semaphore-demo-frontend"
           >
             <SiGithub />
+          </a>
+          <a
+            className="ml-12 text-lg hover:cursor-pointer flex items-center"
+            href="https://semaphore.appliedzkp.org/docs/introduction"
+          >
+            <FaBook className="mr-2" />
+            Docs
           </a>
         </div>
       </div>
